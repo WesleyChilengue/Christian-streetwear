@@ -1,96 +1,22 @@
+
 <!DOCTYPE html>
 <html lang="pt-MZ">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chilen | Manifeste o Reino</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=Alex+Brush&display=swap" rel="stylesheet">
-    
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            scroll-behavior: smooth;
-        }
-
-        .logo-chilen {
-            font-family: 'Alex Brush', cursive;
-            font-weight: 400;
-            line-height: 1;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in {
-            animation: fadeIn 0.8s ease-out forwards;
-        }
-
-        #cart-drawer, #admin-drawer {
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        #cart-overlay, #modal-overlay, #admin-overlay {
-            transition: opacity 0.3s ease;
-        }
-        .drawer-hidden { transform: translateX(100%); }
-        .drawer-visible { transform: translateX(0); }
-        
-        .modal-hidden { opacity: 0; pointer-events: none; }
-        .modal-visible { opacity: 1; pointer-events: auto; }
-
-        .btn-option-selected {
-            background-color: black !important;
-            color: white !important;
-            border-color: black !important;
-            transform: scale(1.05);
-        }
-
-        .nav-logo-text {
-            font-size: 2.5rem;
-            letter-spacing: -0.02em;
-        }
-
-        .admin-scroll::-webkit-scrollbar { width: 4px; }
-        .admin-scroll::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
-
-        /* Estilo para os círculos de cores */
-        .color-swatch {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: 2px solid transparent;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .color-swatch.active {
-            border-color: black;
-            transform: scale(1.15);
-            box-shadow: 0 0 0 2px white, 0 0 0 4px black;
-        }
-        .color-swatch:hover {
-            transform: scale(1.1);
-        }
-
-        /* Efeito de fade para imagem */
-        .image-fade {
-            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .image-fade.low-opacity {
-            opacity: 0;
-        }
-
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        .logo-chilen { font-family: 'Alex Brush', cursive; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
         .custom-scrollbar::-webkit-scrollbar { width: 5px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #888; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
+        .modal-open { overflow: hidden; }
     </style>
 <script type="importmap">
 {
@@ -101,85 +27,126 @@
 }
 </script>
 </head>
-<body class="bg-white text-gray-900 overflow-x-hidden">
+<body class="bg-white text-gray-900 overflow-x-hidden selection:bg-black selection:text-white">
 
     <!-- NAVBAR -->
     <nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex-shrink-0 flex items-center">
-                    <span class="logo-chilen nav-logo-text text-black cursor-pointer select-none hover:opacity-70 transition-opacity" onclick="triggerAdmin()">
-                        Chilen
-                    </span>
+                    <span onclick="triggerAdmin()" class="logo-chilen text-4xl text-black cursor-pointer select-none hover:opacity-70 transition-opacity">Chilen</span>
                 </div>
-                
                 <div class="hidden md:flex space-x-8">
-                    <a href="#catalog" class="text-xs font-bold hover:text-gray-500 transition-colors uppercase tracking-widest">Novidades</a>
-                    <a href="#catalog" onclick="setCategory('Camisetas')" class="text-xs font-bold hover:text-gray-500 transition-colors uppercase tracking-widest">Camisetas</a>
-                    <a href="#catalog" onclick="setCategory('Camisolas')" class="text-xs font-bold hover:text-gray-500 transition-colors uppercase tracking-widest">Camisolas</a>
+                    <a href="#catalog" class="text-[10px] font-black hover:text-gray-500 transition-colors uppercase tracking-widest">Novidades</a>
+                    <button onclick="setCategory('Camisetas')" class="text-[10px] font-black hover:text-gray-500 transition-colors uppercase tracking-widest">Camisetas</button>
+                    <button onclick="setCategory('Camisolas')" class="text-[10px] font-black hover:text-gray-500 transition-colors uppercase tracking-widest">Camisolas</button>
                 </div>
-
                 <div class="flex items-center space-x-4">
-                    <button onclick="toggleCart()" class="p-2 hover:bg-gray-100 rounded-full transition-colors relative">
+                    <button onclick="toggleCart(true)" class="p-2 hover:bg-gray-100 rounded-full transition-colors relative">
                         <i class="fa-solid fa-bag-shopping text-xl"></i>
-                        <span id="cart-count" class="hidden absolute -top-1 -right-1 bg-black text-white text-[10px] font-bold h-5 w-5 flex items-center justify-center rounded-full border-2 border-white">
-                            0
-                        </span>
-                    </button>
-                    <button class="md:hidden p-2 hover:bg-gray-100 rounded-full transition-colors">
-                        <i class="fa-solid fa-bars text-xl"></i>
+                        <span id="cart-count-badge" class="hidden absolute -top-1 -right-1 bg-black text-white text-[9px] font-black h-5 w-5 flex items-center justify-center rounded-full border-2 border-white">0</span>
                     </button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- HERO SECTION -->
+    <!-- HERO -->
     <header class="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black pt-16">
-        <div class="absolute top-0 left-0 w-full h-full pointer-events-none z-0 overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-full pointer-events-none z-0">
             <div class="absolute -top-[10%] -left-[5%] w-[65%] h-[65%] bg-blue-500/5 rounded-full blur-[140px]"></div>
-            <div class="absolute top-[18%] left-[22%] w-32 h-32 bg-blue-400/5 rounded-full blur-[50px]"></div>
         </div>
-
         <div class="relative z-10 w-full max-w-4xl px-4 flex flex-col items-center">
-            <div class="relative group animate-fade-in">
-                <div class="absolute inset-0 bg-white/10 blur-[100px] rounded-full scale-75 opacity-30"></div>
-                <img 
-                    src="https://i.pinimg.com/736x/bb/65/01/bb6501c0b2c6cdd51a166a88c290877f.jpg" 
-                    alt="Chilen Heritage" 
-                    class="max-h-[60vh] md:max-h-[70vh] w-auto object-contain drop-shadow-[0_0_40px_rgba(255,255,255,0.1)] transition-all duration-1000 hover:scale-[1.03]"
-                />
+            <div class="relative animate-fade-in">
+                <img src="https://i.pinimg.com/736x/bb/65/01/bb6501c0b2c6cdd51a166a88c290877f.jpg" class="max-h-[60vh] md:max-h-[70vh] w-auto object-contain drop-shadow-[0_0_40px_rgba(255,255,255,0.1)]">
             </div>
-
             <div class="mt-8 text-center">
-                <h2 class="text-white text-xl md:text-3xl font-black tracking-[0.2em] mb-2 uppercase leading-tight drop-shadow-2xl">IDENTIDADE DO CÉU</h2>
+                <h2 class="text-white text-xl md:text-3xl font-black tracking-[0.2em] mb-2 uppercase leading-tight">IDENTIDADE DO CÉU</h2>
                 <div class="h-[1px] w-12 bg-white/30 mx-auto mb-2"></div>
-                <h2 class="text-[#D4AF37] text-lg md:text-2xl font-bold tracking-[0.4em] mb-10 uppercase italic drop-shadow-[0_0_8px_rgba(212,175,55,0.4)]">ESTILO URBANO</h2>
-                <a href="#catalog" class="group relative inline-block px-20 py-5 bg-white text-black font-black rounded-full transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_60px_rgba(255,255,255,0.15)] overflow-hidden">
-                    <span class="relative z-10 tracking-[0.4em] text-[10px] uppercase">Explorar Catálogo</span>
-                </a>
+                <h2 class="text-[#D4AF37] text-lg md:text-2xl font-bold tracking-[0.4em] uppercase italic">ESTILO URBANO</h2>
             </div>
         </div>
         <div class="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-white via-white/5 to-transparent z-20"></div>
     </header>
 
-    <!-- CATALOG SECTION -->
-    <main id="catalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 space-y-6 md:space-y-0">
-            <div>
-                <h2 class="text-4xl font-black tracking-tighter mb-2 uppercase">Nossa Coleção</h2>
-                <p class="text-[10px] font-bold text-amber-600 uppercase tracking-widest mb-6">* Disponível para Maputo Cidade e Província (Sob custo adicional)</p>
-                <div class="flex flex-wrap gap-2" id="category-filters">
-                    <button onclick="setCategory('Todos')" class="cat-btn px-6 py-2 rounded-full text-xs font-bold transition-all uppercase tracking-widest bg-black text-white shadow-lg">Todos</button>
-                    <button onclick="setCategory('Camisetas')" class="cat-btn px-6 py-2 rounded-full text-xs font-bold transition-all uppercase tracking-widest bg-gray-100 text-gray-500 hover:bg-gray-200">Camisetas</button>
-                    <button onclick="setCategory('Camisolas')" class="cat-btn px-6 py-2 rounded-full text-xs font-bold transition-all uppercase tracking-widest bg-gray-100 text-gray-500 hover:bg-gray-200">Camisolas</button>
+    <!-- COPY SECTION (MANIFESTO) -->
+    <section class="bg-white py-24 px-4 overflow-hidden border-t border-gray-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+                <div class="relative lg:sticky lg:top-24">
+                    <div class="absolute -top-10 -left-10 w-32 h-32 bg-amber-100 rounded-full blur-3xl opacity-50"></div>
+                    <h2 class="text-5xl md:text-7xl font-black tracking-tighter leading-[0.9] uppercase mb-8">
+                        Não é apenas <span class="text-amber-600 italic logo-chilen lowercase font-normal tracking-normal">roupa.</span><br/>
+                        É uma <span class="text-black">Identidade.</span>
+                    </h2>
+                    <div class="h-1 w-24 bg-black mb-8"></div>
+                    <p class="text-xl md:text-2xl font-medium text-gray-800 leading-relaxed italic pr-8">
+                        "A Chilen nasce da fusão entre a pulsação urbana e a mensagem eterna do Reino."
+                    </p>
+                </div>
+                
+                <div class="space-y-10">
+                    <div class="space-y-4">
+                        <h3 class="text-2xl font-black uppercase tracking-tight text-black">Fé não é tendência. É identidade.</h3>
+                        <p class="text-base text-gray-600 leading-relaxed">
+                            O streetwear sempre foi sobre atitude e a nossa vem do Reino. Cada peça carrega propósito, verdade e a mensagem que não muda com o tempo. <span class="font-bold text-black">Não vestimos só estilo, vestimos fé.</span>
+                        </p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h3 class="text-xl font-black uppercase tracking-tight text-amber-600">Aqui, todos encontram o altar.</h3>
+                        <p class="text-base text-gray-600 leading-relaxed">
+                            Design autêntico, qualidade de verdade e uma mensagem clara: Cristo no centro, em qualquer cenário.
+                        </p>
+                    </div>
+
+                    <div class="bg-gray-50 p-8 rounded-2xl border-l-4 border-black shadow-sm">
+                        <h4 class="text-lg font-black uppercase mb-3">Não é só roupa. É posicionamento.</h4>
+                        <p class="text-gray-600 italic leading-relaxed">É viver o evangelho sem silenciar quem você é.</p>
+                    </div>
+
+                    <div class="space-y-4 pt-4">
+                        <div class="flex items-center space-x-4 group">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center text-amber-600 text-sm"><i class="fa-solid fa-hand-point-right"></i></span>
+                            <span class="text-sm font-black uppercase tracking-[0.15em] text-black">Vista sua fé.</span>
+                        </div>
+                        <div class="flex items-center space-x-4 group">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center text-amber-600 text-sm"><i class="fa-solid fa-hand-point-right"></i></span>
+                            <span class="text-sm font-black uppercase tracking-[0.15em] text-black">Ande com propósito.</span>
+                        </div>
+                        <div class="flex items-center space-x-4 group">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center text-amber-600 text-sm"><i class="fa-solid fa-hand-point-right"></i></span>
+                            <span class="text-sm font-black uppercase tracking-[0.15em] text-black">Leve a Palavra para onde quer que fores.</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-8 pt-8 border-t border-gray-100">
+                        <div>
+                            <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-amber-600 mb-2">Qualidade</h4>
+                            <p class="text-xs font-bold text-gray-400 uppercase">Tecidos Premium Selecionados</p>
+                        </div>
+                        <div>
+                            <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-amber-600 mb-2">Mensagem</h4>
+                            <p class="text-xs font-bold text-gray-400 uppercase">Impacto Eterno</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="flex items-center space-x-4 text-xs font-bold text-gray-400 uppercase tracking-widest">
+        </div>
+    </section>
+
+    <!-- CATALOG -->
+    <main id="catalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-gray-100">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+            <div>
+                <h2 class="text-4xl font-black tracking-tighter mb-2 uppercase">Nossa Coleção</h2>
+                <p class="text-[10px] font-bold text-amber-600 uppercase tracking-widest mb-6">* Maputo Cidade e Província (Sob custo adicional)</p>
+                <div id="filter-container" class="flex flex-wrap gap-2"></div>
+            </div>
+            <div class="mt-4 md:mt-0 text-xs font-bold text-gray-400 uppercase tracking-widest">
                 <span id="product-count">0 modelos</span>
             </div>
         </div>
-
         <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16"></div>
     </main>
 
@@ -190,590 +157,473 @@
                 <span class="logo-chilen text-6xl text-white mb-6 block">Chilen</span>
                 <p class="text-gray-400 max-w-md mb-8">Vestindo a fé em Moçambique. Qualidade premium para quem carrega o nome de Jesus com orgulho.</p>
                 <div class="flex space-x-6">
-                    <a href="https://instagram.com/Wesmathiasg" target="_blank" class="hover:text-[#E4405F] transition-colors flex items-center space-x-2">
-                        <i class="fa-brands fa-instagram text-2xl"></i>
-                        <span class="text-xs font-bold uppercase tracking-widest">@Wesmathiasg</span>
+                    <a href="https://instagram.com/Wesmathiasg" target="_blank" class="hover:text-[#E4405F] transition-colors flex items-center space-x-2 group">
+                        <i class="fa-brands fa-instagram text-2xl group-hover:scale-110 transition-transform"></i>
+                        <span class="text-[10px] font-black uppercase tracking-widest">@Wesmathiasg</span>
                     </a>
                 </div>
             </div>
             <div>
-                <h4 class="font-bold mb-6 text-sm uppercase tracking-widest text-gray-400">Entrega</h4>
+                <h4 class="font-black mb-6 text-[10px] uppercase tracking-widest text-gray-400">Entrega</h4>
                 <ul class="space-y-4 text-gray-400 text-sm">
-                    <li class="flex items-start space-x-2"><i class="fa-solid fa-truck-fast mt-1"></i><span>Maputo Cidade e Província.</span></li>
+                    <li class="flex items-start space-x-2">
+                        <i class="fa-solid fa-truck-fast mt-1 text-[#D4AF37]"></i>
+                        <span class="font-bold text-xs uppercase tracking-tight">Maputo Cidade e Província.</span>
+                    </li>
                 </ul>
             </div>
             <div>
-                <h4 class="font-bold mb-6 text-sm uppercase tracking-widest text-gray-400">WhatsApp</h4>
-                <a href="https://wa.me/258872201674" class="hover:text-[#25D366] transition-colors flex items-center space-x-2">
-                    <i class="fa-brands fa-whatsapp text-lg"></i>
-                    <span class="font-bold">+258 872 201 674</span>
+                <h4 class="font-black mb-6 text-[10px] uppercase tracking-widest text-gray-400">WhatsApp</h4>
+                <a id="whatsapp-footer-link" href="#" target="_blank" class="hover:text-[#25D366] transition-colors flex items-center space-x-2 group">
+                    <i class="fa-brands fa-whatsapp text-lg group-hover:scale-110 transition-transform"></i>
+                    <span id="whatsapp-number-display" class="font-black text-sm">+258 872 201 674</span>
                 </a>
             </div>
         </div>
-        <div class="max-w-7xl mx-auto mt-20 pt-8 border-t border-gray-800 text-gray-500 text-[10px] text-center md:text-left uppercase tracking-widest font-bold">
-            <p>&copy; 2026 Chilen - Manifeste o Reino. Todos os direitos reservados.</p>
+        <div class="max-w-7xl mx-auto mt-20 pt-8 border-t border-gray-800 text-gray-500 text-[9px] text-center md:text-left uppercase tracking-widest font-black">
+            <p>&copy; <span id="current-year"></span> Chilen - Manifeste o Reino. Todos os direitos reservados.</p>
         </div>
     </footer>
 
-    <!-- PRODUCT MODAL -->
-    <div id="modal-overlay" class="modal-hidden fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md">
-        <div class="bg-white w-full max-w-4xl max-h-[95vh] overflow-y-auto rounded-3xl shadow-2xl relative flex flex-col md:flex-row custom-scrollbar">
-            <button onclick="closeModal()" class="absolute top-6 right-6 z-10 p-2 bg-white/90 hover:bg-black hover:text-white rounded-full shadow-lg transition-colors">
-                <i class="fa-solid fa-xmark text-xl"></i>
-            </button>
-            <div class="w-full md:w-1/2 bg-gray-50 flex items-center justify-center p-6 min-h-[400px]">
-                <img id="modal-img" src="" alt="" class="w-full h-auto rounded-xl shadow-lg image-fade">
-            </div>
-            <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col">
-                <span id="modal-category" class="text-[11px] font-black text-gray-400 uppercase tracking-[0.4em]">CATEGORIA</span>
-                <h2 id="modal-title" class="text-4xl font-black tracking-tighter mt-2 mb-2 uppercase leading-none">PRODUTO</h2>
-                
-                <div class="flex items-baseline gap-4 mt-4">
-                    <p id="modal-price" class="text-3xl font-black text-black">0 MT</p>
-                    <span id="selected-color-name" class="text-[10px] font-black text-amber-600 uppercase tracking-widest bg-amber-50 px-2 py-1 rounded"></span>
-                </div>
-                
-                <div class="mt-8 space-y-6">
-                    <div id="size-type-container" class="hidden">
-                        <h4 class="text-[10px] font-black mb-4 uppercase tracking-widest text-gray-400">TIPO DE CORTE</h4>
-                        <div class="flex gap-2">
-                            <button id="btn-regular" onclick="setSizeType('Regular')" class="flex-1 py-3 text-[10px] font-bold border-2 rounded-xl transition-all uppercase tracking-widest btn-option-selected">Regular Size</button>
-                            <button id="btn-oversize" onclick="setSizeType('Oversize')" class="flex-1 py-3 text-[10px] font-bold border-2 rounded-xl transition-all uppercase tracking-widest border-gray-100 hover:border-black">Oversized</button>
-                        </div>
-                    </div>
-
-                    <div>
-                        <h4 class="text-[10px] font-black mb-4 uppercase tracking-widest text-gray-400">1. ESCOLHA A COR</h4>
-                        <div id="modal-colors" class="flex flex-wrap gap-4"></div>
-                    </div>
-                    <div>
-                        <h4 class="text-[10px] font-black mb-4 uppercase tracking-widest text-gray-400">2. SELECIONE O TAMANHO</h4>
-                        <div id="modal-sizes" class="grid grid-cols-4 gap-2"></div>
-                    </div>
-                    <button onclick="addToCartFromModal()" class="w-full py-5 bg-black text-white font-black rounded-2xl hover:bg-gray-800 transition-all shadow-2xl uppercase tracking-widest text-xs">
-                        Adicionar ao Carrinho
-                    </button>
-                </div>
-            </div>
+    <!-- MODAL DE PRODUTO -->
+    <div id="product-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md">
+        <div class="bg-white w-full max-w-4xl max-h-[95vh] overflow-y-auto rounded-3xl relative flex flex-col md:flex-row shadow-2xl custom-scrollbar">
+            <button onclick="closeProductModal()" class="absolute top-6 right-6 z-10 p-2 bg-white/90 hover:bg-black hover:text-white rounded-full transition-colors"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <div id="modal-image-container" class="w-full md:w-1/2 bg-gray-50 flex items-center justify-center p-6 min-h-[400px]"></div>
+            <div id="modal-details-container" class="w-full md:w-1/2 p-8 md:p-12 flex flex-col"></div>
         </div>
     </div>
 
-    <!-- CART DRAWER -->
-    <div id="cart-overlay" class="modal-hidden fixed inset-0 z-[200] bg-black/40 backdrop-blur-sm" onclick="toggleCart()"></div>
-    <div id="cart-drawer" class="drawer-hidden fixed inset-y-0 right-0 w-screen max-w-md bg-white shadow-xl z-[201] flex flex-col">
-        <div class="flex items-center justify-between p-6 border-b border-gray-100">
-            <h2 class="text-xl font-black">MEU CARRINHO</h2>
-            <button onclick="toggleCart()" class="p-2 hover:bg-gray-100 rounded-full"><i class="fa-solid fa-xmark text-xl"></i></button>
+    <!-- DRAWER CARRINHO -->
+    <div id="cart-drawer-overlay" class="hidden fixed inset-0 z-[200] bg-black/40 backdrop-blur-sm" onclick="toggleCart(false)"></div>
+    <div id="cart-drawer" class="fixed inset-y-0 right-0 w-screen max-w-md bg-white shadow-2xl z-[201] flex flex-col translate-x-full transition-transform duration-300">
+        <div class="flex items-center justify-between p-6 border-b">
+            <h2 class="text-xl font-black uppercase tracking-tighter">Meu Carrinho</h2>
+            <button onclick="toggleCart(false)" class="p-2 hover:bg-gray-100 rounded-full"><i class="fa-solid fa-xmark text-xl"></i></button>
         </div>
         <div id="cart-items-container" class="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar"></div>
-        <div id="cart-footer" class="p-6 border-t border-gray-100 bg-gray-50/50 hidden">
+        <div id="cart-footer" class="hidden p-6 border-t bg-gray-50/50">
             <div class="flex justify-between items-center mb-6">
-                <span class="text-base font-medium text-gray-600">Subtotal</span>
-                <span id="cart-total" class="text-xl font-black">0 MT</span>
+                <span class="text-sm font-bold text-gray-400 uppercase tracking-widest">Subtotal</span>
+                <span id="cart-total" class="text-2xl font-black">0 MT</span>
             </div>
-            <button onclick="checkout()" class="w-full py-4 bg-[#25D366] text-white font-bold rounded-full flex items-center justify-center space-x-3 shadow-lg">
-                <i class="fa-brands fa-whatsapp text-2xl"></i><span>ENCOMENDAR VIA WHATSAPP</span>
+            <button onclick="handleCheckout()" class="w-full py-4 bg-[#25D366] text-white font-black rounded-2xl flex items-center justify-center space-x-3 shadow-lg">
+                <i class="fa-brands fa-whatsapp text-2xl"></i>
+                <span class="text-[11px] uppercase tracking-widest">Encomendar via WhatsApp</span>
             </button>
         </div>
     </div>
 
-    <!-- ADMIN PANEL DRAWER -->
-    <div id="admin-overlay" class="modal-hidden fixed inset-0 z-[300] bg-black/60 backdrop-blur-md" onclick="toggleAdmin()"></div>
-    <div id="admin-drawer" class="drawer-hidden fixed inset-y-0 right-0 w-screen max-w-2xl bg-white shadow-2xl z-[301] flex flex-col">
-        <div class="flex items-center justify-between p-6 border-b border-gray-100 bg-gray-50">
+    <!-- PAINEL ADMIN AVANÇADO -->
+    <div id="admin-drawer-overlay" class="hidden fixed inset-0 z-[300] bg-black/60 backdrop-blur-md" onclick="toggleAdmin(false)"></div>
+    <div id="admin-drawer" class="fixed inset-y-0 right-0 w-screen max-w-2xl bg-white shadow-2xl z-[301] flex flex-col translate-x-full transition-transform duration-300">
+        <div class="flex items-center justify-between p-6 border-b bg-gray-50">
             <div>
-                <h2 class="text-xl font-black uppercase tracking-tighter">Painel de Controlo</h2>
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Gestão de Inventário</p>
+                <h2 class="text-xl font-black uppercase tracking-tighter">Painel Administrativo</h2>
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Gestão Chilen Official</p>
             </div>
-            <button onclick="toggleAdmin()" class="p-2 hover:bg-gray-200 rounded-full transition-colors"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <button onclick="toggleAdmin(false)" class="p-2 hover:bg-gray-200 rounded-full"><i class="fa-solid fa-xmark text-xl"></i></button>
         </div>
         
-        <div class="flex-1 overflow-y-auto p-6 admin-scroll space-y-8 custom-scrollbar">
-            <div class="bg-white p-6 rounded-2xl border-2 border-dashed border-gray-100">
-                <h3 id="admin-form-title" class="text-xs font-black uppercase tracking-widest mb-6 text-gray-400">Configurar Artigo</h3>
-                <form id="admin-product-form" onsubmit="handleProductSubmit(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="hidden" id="admin-id">
-                    <div class="md:col-span-2">
-                        <label class="text-[9px] font-bold uppercase text-gray-400 ml-1">Nome do Produto</label>
-                        <input type="text" id="admin-name" required class="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl text-sm outline-none focus:border-black transition-colors" placeholder="Ex: Jesus is King">
-                    </div>
-                    <div>
-                        <label class="text-[9px] font-bold uppercase text-gray-400 ml-1">Preço Regular (MT)</label>
-                        <input type="number" id="admin-price" required class="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl text-sm outline-none focus:border-black transition-colors" placeholder="1500">
-                    </div>
-                    <div>
-                        <label class="text-[9px] font-bold uppercase text-gray-400 ml-1">Preço Oversize (MT) - Opcional</label>
-                        <input type="number" id="admin-oversize-price" class="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl text-sm outline-none focus:border-black transition-colors" placeholder="1800">
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="text-[9px] font-bold uppercase text-gray-400 ml-1">Categoria</label>
-                        <select id="admin-category" required class="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl text-sm outline-none focus:border-black transition-colors">
-                            <option value="Camisetas">Camisetas</option>
-                            <option value="Camisolas">Camisolas</option>
-                        </select>
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="text-[9px] font-bold uppercase text-gray-400 ml-1">URL da Imagem Padrão (Capa)</label>
-                        <input type="url" id="admin-image" required class="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl text-sm outline-none focus:border-black transition-colors" placeholder="https://exemplo.com/foto.jpg">
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="text-[9px] font-bold uppercase text-gray-400 ml-1">Descrição Curta</label>
-                        <textarea id="admin-description" required class="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl text-sm outline-none focus:border-black transition-colors" rows="2"></textarea>
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="text-[9px] font-bold uppercase text-gray-400 ml-1">Cores Disponíveis (separadas por vírgula)</label>
-                        <input type="text" id="admin-colors" required class="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl text-sm outline-none focus:border-black transition-colors" placeholder="Preto, Branco, Dourado" oninput="generateColorImageInputs()">
-                    </div>
+        <div class="flex-1 overflow-y-auto p-6 custom-scrollbar space-y-8">
+            <form id="admin-form" onsubmit="handleAdminSubmit(event)" class="bg-white p-6 rounded-2xl border-2 border-dashed border-gray-100 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input type="hidden" id="form-product-id">
+                
+                <div class="md:col-span-2">
+                    <label class="text-[9px] font-black uppercase text-gray-400 ml-1">Nome do Artigo</label>
+                    <input type="text" id="form-name" required class="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl text-sm outline-none focus:border-black transition-colors">
+                </div>
 
-                    <!-- CONTAINER DINÂMICO PARA IMAGENS DE CORES -->
-                    <div id="admin-color-images-container" class="md:col-span-2 space-y-3 bg-gray-50 p-4 rounded-xl border border-gray-100 hidden">
-                        <h4 class="text-[9px] font-bold uppercase text-gray-500 mb-2">Links dos Mockups das Cores</h4>
-                        <div id="color-inputs-list" class="space-y-3"></div>
-                    </div>
+                <div class="md:col-span-2">
+                    <label class="text-[9px] font-black uppercase text-gray-400 ml-1">Descrição Detalhada</label>
+                    <textarea id="form-description" placeholder="Ex: Algodão 100%..." class="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl text-sm outline-none focus:border-black min-h-[100px]"></textarea>
+                </div>
 
-                    <div class="md:col-span-2">
-                        <label class="text-[9px] font-bold uppercase text-gray-400 ml-1">Tamanhos (separados por vírgula)</label>
-                        <input type="text" id="admin-sizes" required class="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl text-sm outline-none focus:border-black transition-colors" placeholder="S, M, L, XL">
-                    </div>
-                    <div class="md:col-span-2 flex gap-2">
-                        <button type="submit" class="flex-1 py-4 bg-black text-white font-bold rounded-xl text-xs uppercase tracking-widest hover:bg-gray-800 transition-colors shadow-lg">Guardar Artigo</button>
-                        <button type="button" onclick="resetAdminForm()" class="px-6 py-4 bg-gray-200 text-gray-600 font-bold rounded-xl text-xs uppercase tracking-widest hover:bg-gray-300 transition-colors">Limpar</button>
-                    </div>
-                </form>
-            </div>
-            <div class="space-y-4 pb-12">
-                <h3 class="text-xs font-black uppercase tracking-widest text-gray-400">Inventário Atual</h3>
-                <div id="admin-product-list" class="space-y-3"></div>
+                <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 space-y-3">
+                    <h4 class="text-[9px] font-black text-gray-400 uppercase tracking-widest">Preço Regular</h4>
+                    <input type="number" id="form-price" placeholder="Preço (MT)" required class="w-full p-2 bg-white border border-gray-100 rounded-lg text-xs">
+                    <input type="number" id="form-discount" placeholder="Promoção (MT) opcional" class="w-full p-2 bg-white border border-gray-100 rounded-lg text-xs">
+                </div>
+
+                <div class="bg-amber-50/30 p-4 rounded-xl border border-amber-100 space-y-3">
+                    <h4 class="text-[9px] font-black text-amber-600 uppercase tracking-widest">Preço Oversize</h4>
+                    <input type="number" id="form-oversize-price" placeholder="Preço Oversize (MT)" class="w-full p-2 bg-white border border-gray-100 rounded-lg text-xs">
+                    <input type="number" id="form-oversize-discount" placeholder="Promoção Oversize (MT)" class="w-full p-2 bg-white border border-gray-100 rounded-lg text-xs">
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="text-[9px] font-black uppercase text-gray-400 ml-1">Categoria</label>
+                    <select id="form-category" class="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl text-sm">
+                        <option value="Camisetas">Camisetas</option>
+                        <option value="Camisolas">Camisolas</option>
+                    </select>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="text-[9px] font-black uppercase text-gray-400 ml-1">Link da Imagem Principal</label>
+                    <input type="url" id="form-image" required class="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl text-sm">
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="text-[9px] font-black uppercase text-gray-400 ml-1">Cores (Preto, Branco, Dourado...)</label>
+                    <input type="text" id="form-colors" oninput="generateMockupInputs()" placeholder="Separe por vírgulas" class="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl text-sm">
+                </div>
+
+                <div id="mockup-urls-container" class="md:col-span-2 space-y-3 bg-gray-50 p-4 rounded-xl border border-gray-100 hidden">
+                    <h4 class="text-[9px] font-black uppercase text-gray-500 mb-2">URLs de Mockups por Cor</h4>
+                    <div id="mockup-inputs-list" class="space-y-2"></div>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="text-[9px] font-black uppercase text-gray-400 ml-1">Tamanhos (S, M, L, XL...)</label>
+                    <input type="text" id="form-sizes" placeholder="Separe por vírgulas" class="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl text-sm">
+                </div>
+
+                <div class="md:col-span-2 flex gap-2 pt-4">
+                    <button type="submit" class="flex-1 py-4 bg-black text-white font-black rounded-xl text-[10px] uppercase tracking-widest shadow-xl">Guardar Artigo</button>
+                    <button type="button" onclick="resetAdminForm()" class="px-6 py-4 bg-gray-200 text-gray-600 font-black rounded-xl text-[10px] uppercase tracking-widest">Limpar</button>
+                </div>
+            </form>
+
+            <div class="space-y-4">
+                <h3 class="text-[10px] font-black uppercase tracking-widest text-gray-400">Inventário Ativo</h3>
+                <div id="admin-product-list" class="space-y-3 pb-20"></div>
+                <button onclick="resetInventory()" class="w-full py-3 bg-red-50 text-red-600 font-bold rounded-xl text-[10px] uppercase tracking-widest">Zerar e Repor Padrão</button>
             </div>
         </div>
     </div>
 
     <script>
-        const ADMIN_PASSWORD = "180283De";
-        const STORE_INFO = { whatsappNumber: '258872201674', companyName: 'Chilen' };
-
-        const COLOR_MAP = {
-            'Preto': '#000000',
-            'Branco': '#ffffff',
-            'Dourado': '#D4AF37',
-            'Cinzento': '#808080',
-            'Cinzento Mescla': '#b5b5b5',
-            'Azul Marinho': '#000080',
-            'Azul': '#0000FF',
-            'Vermelho': '#FF0000',
-            'Verde': '#008000'
-        };
-
+        // --- CONFIGURAÇÃO ---
+        const STORE_INFO = { whatsappNumber: '258872201674', adminPassword: '180283De' };
         const INITIAL_PRODUCTS = [
-            { 
-                id: 'jesus-is-king-mz', 
-                name: 'Jesus is King', 
-                price: 1500, 
-                oversizePrice: 1800, 
-                category: 'Camisetas', 
-                description: 'Design premium que proclama a soberania urbana.', 
-                imageUrl: 'https://i.pinimg.com/1200x/6e/fe/0a/6efe0a86f88eba01c11da6d3b0821de7.jpg', 
-                sizes: ['S', 'M', 'L', 'XL', 'XXL'], 
-                colors: ['Preto', 'Branco', 'Cinzento'],
-                colorImages: {}
-            },
-            { 
-                id: 'philippians-413-hoodie', 
-                name: 'Philippians 4:13', 
-                price: 3500, 
-                category: 'Camisolas', 
-                description: 'Tudo posso naquele que me fortalece.', 
-                imageUrl: 'https://i.pinimg.com/1200x/09/a2/55/09a255a574ac7ff391c043c3e2a34452.jpg', 
-                sizes: ['S', 'M', 'L', 'XL'], 
-                colors: ['Preto', 'Azul Marinho'],
-                colorImages: {}
-            },
-            { 
-                id: 'goat-official-tshirt', 
-                name: 'GOAT', 
-                price: 1200, 
-                oversizePrice: 1500, 
-                category: 'Camisetas', 
-                description: 'Greatest Of All Time - O Rei dos Reis.', 
-                imageUrl: 'https://i.pinimg.com/1200x/73/79/34/737934a7a7de7434704de76a7a498987.jpg', 
-                sizes: ['S', 'M', 'L', 'XL'], 
-                colors: ['Branco', 'Preto'],
-                colorImages: {}
-            },
-            { 
-                id: 'holy-spirit-sweat-mz', 
-                name: 'Sweatshirt Holy Spirit MZ', 
-                price: 1500, 
-                category: 'Camisolas', 
-                description: 'Moletom moderno com estampa de alta durabilidade.', 
-                imageUrl: 'https://i.pinimg.com/1200x/e1/86/5e/e1865e1425163d32c98271e693a450cb.jpg', 
-                sizes: ['M', 'L', 'XL'], 
-                colors: ['Preto', 'Cinzento Mescla'],
-                colorImages: {}
-            }
+            { id: 'j-king', name: 'Jesus is King', price: 1500, oversizePrice: 1800, category: 'Camisetas', description: 'Design premium que proclama a soberania urbana.', imageUrl: 'https://i.pinimg.com/1200x/6e/fe/0a/6efe0a86f88eba01c11da6d3b0821de7.jpg', sizes: ['S', 'M', 'L', 'XL'], colors: ['Preto', 'Branco'], colorImages: {} },
+            { id: 'p-413', name: 'Philippians 4:13', price: 3500, category: 'Camisolas', description: 'Tudo posso naquele que me fortalece.', imageUrl: 'https://i.pinimg.com/1200x/09/a2/55/09a255a574ac7ff391c043c3e2a34452.jpg', sizes: ['M', 'L', 'XL'], colors: ['Preto', 'Azul Marinho'], colorImages: {} },
+            { id: 'goat', name: 'GOAT', price: 1200, oversizePrice: 1500, category: 'Camisetas', description: 'Greatest Of All Time - O Rei dos Reis.', imageUrl: 'https://i.pinimg.com/1200x/73/79/34/737934a7a7de7434704de76a7a498987.jpg', sizes: ['S', 'M', 'L'], colors: ['Branco', 'Preto'], colorImages: {} },
+            { id: 'h-spirit', name: 'Holy Spirit MZ', price: 1500, category: 'Camisolas', description: 'Moletom moderno com estampa de alta durabilidade.', imageUrl: 'https://i.pinimg.com/1200x/e1/86/5e/e1865e1425163d32c98271e693a450cb.jpg', sizes: ['M', 'L', 'XL'], colors: ['Preto', 'Cinzento Mescla'], colorImages: {} }
         ];
 
         let products = JSON.parse(localStorage.getItem('chilen_inventory')) || INITIAL_PRODUCTS;
         let cart = JSON.parse(localStorage.getItem('chilen_cart')) || [];
         let currentCategory = 'Todos';
-        let currentProduct = null;
+        let activeProduct = null;
         let selectedSize = '';
         let selectedColor = '';
         let selectedSizeType = 'Regular';
 
-        // Geração dinâmica de inputs no Admin para mockups de cores
-        function generateColorImageInputs() {
-            const colorsStr = document.getElementById('admin-colors').value;
-            const container = document.getElementById('admin-color-images-container');
-            const list = document.getElementById('color-inputs-list');
+        // --- INICIALIZAÇÃO ---
+        function init() {
+            document.getElementById('current-year').innerText = new Date().getFullYear();
+            document.getElementById('whatsapp-footer-link').href = `https://wa.me/${STORE_INFO.whatsappNumber}`;
+            document.getElementById('whatsapp-number-display').innerText = `+${STORE_INFO.whatsappNumber.slice(0,3)} ${STORE_INFO.whatsappNumber.slice(3,6)} ${STORE_INFO.whatsappNumber.slice(6,9)} ${STORE_INFO.whatsappNumber.slice(9)}`;
             
-            if(!colorsStr.trim()) {
-                container.classList.add('hidden');
-                return;
-            }
-
-            const colors = colorsStr.split(',').map(c => c.trim()).filter(c => c.length > 0);
-            if(colors.length === 0) {
-                container.classList.add('hidden');
-                return;
-            }
-
-            container.classList.remove('hidden');
-            const currentInputs = {};
-            list.querySelectorAll('input').forEach(inp => {
-                currentInputs[inp.dataset.color] = inp.value;
-            });
-
-            list.innerHTML = '';
-            colors.forEach(color => {
-                const div = document.createElement('div');
-                div.className = 'flex flex-col space-y-1';
-                div.innerHTML = `
-                    <label class="text-[8px] font-bold uppercase text-gray-400">Mockup URL para: ${color}</label>
-                    <input type="url" data-color="${color}" class="admin-color-img-input w-full p-2 bg-white border border-gray-100 rounded-lg text-[10px] outline-none focus:border-black" placeholder="Link da imagem..." value="${currentInputs[color] || ''}">
-                `;
-                list.appendChild(div);
-            });
+            renderFilters();
+            renderProducts();
+            updateCartUI();
         }
+
+        function renderFilters() {
+            const categories = ['Todos', 'Camisetas', 'Camisolas'];
+            const container = document.getElementById('filter-container');
+            container.innerHTML = categories.map(cat => `
+                <button onclick="setCategory('${cat}')" class="px-6 py-2 rounded-full text-xs font-bold transition-all uppercase tracking-widest ${currentCategory === cat ? 'bg-black text-white shadow-lg' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}">
+                    ${cat}
+                </button>
+            `).join('');
+        }
+
+        function setCategory(cat) { currentCategory = cat; renderFilters(); renderProducts(); }
 
         function renderProducts() {
             const grid = document.getElementById('product-grid');
-            if(!grid) return;
-            grid.innerHTML = '';
             const filtered = currentCategory === 'Todos' ? products : products.filter(p => p.category === currentCategory);
             document.getElementById('product-count').innerText = `${filtered.length} modelos`;
-            filtered.forEach(p => {
-                grid.innerHTML += `
-                    <div class="group cursor-pointer flex flex-col animate-fade-in" onclick="openModal('${p.id}')">
-                        <div class="aspect-[4/5] bg-gray-100 overflow-hidden relative mb-4 rounded-sm">
-                            <img src="${p.imageUrl}" alt="${p.name}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                            <div class="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <span class="bg-white text-black text-xs font-bold px-3 py-1 rounded-full shadow-lg">DETALHES</span>
-                            </div>
-                        </div>
-                        <div class="flex flex-col space-y-1">
-                            <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">${p.category}</p>
-                            <h3 class="text-base font-semibold group-hover:underline underline-offset-4">${p.name}</h3>
-                            <p class="text-black font-bold text-sm">${p.price.toLocaleString('pt-MZ')} MT ${p.oversizePrice ? '<span class="text-[10px] text-gray-400 font-normal"> (Base)</span>' : ''}</p>
+            
+            grid.innerHTML = filtered.map(p => {
+                const hasPromo = p.discountPrice || p.oversizeDiscountPrice;
+                const displayPrice = p.discountPrice || p.price;
+                return `
+                <div class="group cursor-pointer flex flex-col animate-fade-in" onclick="openProductModal('${p.id}')">
+                    <div class="aspect-[4/5] bg-gray-100 overflow-hidden relative mb-4 rounded-sm shadow-sm">
+                        <img src="${p.imageUrl}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        ${hasPromo ? '<span class="absolute top-4 left-4 bg-red-600 text-white text-[8px] font-black px-3 py-1.5 rounded uppercase tracking-widest shadow-xl">PROMO</span>' : ''}
+                        <div class="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
+                            <span class="bg-white text-black text-[10px] font-black px-4 py-2 rounded-full shadow-xl uppercase tracking-widest">Ver Detalhes</span>
                         </div>
                     </div>
-                `;
-            });
+                    <div class="flex flex-col space-y-1">
+                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">${p.category}</p>
+                        <h3 class="text-base font-bold group-hover:underline">${p.name}</h3>
+                        <p class="text-black font-black text-sm">${displayPrice.toLocaleString('pt-MZ')} MT ${p.oversizePrice ? '<span class="text-[10px] text-gray-400 font-bold ml-1">(Desde)</span>' : ''}</p>
+                    </div>
+                </div>`;
+            }).join('');
         }
 
-        function setSizeType(type) {
-            selectedSizeType = type;
-            const btnReg = document.getElementById('btn-regular');
-            const btnOver = document.getElementById('btn-oversize');
-            if(type === 'Regular') {
-                btnReg.classList.add('btn-option-selected');
-                btnOver.classList.remove('btn-option-selected');
-                document.getElementById('modal-price').innerText = `${currentProduct.price.toLocaleString('pt-MZ')} MT`;
+        // --- ADMIN AVANÇADO ---
+        function triggerAdmin() {
+            const pass = prompt("Acesso Administrativo Chilen:");
+            if (pass === STORE_INFO.adminPassword) toggleAdmin(true);
+            else if (pass) alert("Acesso Negado.");
+        }
+
+        function toggleAdmin(open) {
+            const overlay = document.getElementById('admin-drawer-overlay');
+            const drawer = document.getElementById('admin-drawer');
+            if (open) {
+                overlay.classList.remove('hidden');
+                drawer.classList.remove('translate-x-full');
+                renderAdminProducts();
             } else {
-                btnOver.classList.add('btn-option-selected');
-                btnReg.classList.remove('btn-option-selected');
-                document.getElementById('modal-price').innerText = `${currentProduct.oversizePrice.toLocaleString('pt-MZ')} MT`;
+                overlay.classList.add('hidden');
+                drawer.classList.add('translate-x-full');
             }
         }
 
-        function updateColorSelection(colorName, element) {
-            selectedColor = colorName;
-            document.getElementById('selected-color-name').innerText = colorName;
-            document.querySelectorAll('.color-swatch').forEach(sw => sw.classList.remove('active'));
-            element.classList.add('active');
+        function renderAdminProducts() {
+            const list = document.getElementById('admin-product-list');
+            list.innerHTML = products.map(p => `
+                <div class="flex items-center justify-between p-4 bg-gray-50 border rounded-2xl group hover:border-black transition-colors">
+                    <div class="flex items-center space-x-4">
+                        <img src="${p.imageUrl}" class="w-10 h-10 object-cover rounded shadow-sm">
+                        <div>
+                            <span class="text-xs font-black uppercase block">${p.name}</span>
+                            <span class="text-[9px] font-bold text-gray-400 uppercase">${p.category} | ${p.price} MT</span>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="editProduct('${p.id}')" class="p-2 text-black hover:bg-black hover:text-white rounded-lg transition-colors"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button onclick="deleteProduct('${p.id}')" class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>
+            `).join('');
+        }
 
-            const modalImg = document.getElementById('modal-img');
-            modalImg.classList.add('low-opacity');
+        function generateMockupInputs() {
+            const colorsStr = document.getElementById('form-colors').value;
+            const container = document.getElementById('mockup-urls-container');
+            const list = document.getElementById('mockup-inputs-list');
+            const colors = colorsStr.split(',').map(c => c.trim()).filter(c => c);
             
-            setTimeout(() => {
-                const colorImg = (currentProduct.colorImages && currentProduct.colorImages[colorName]) 
-                    ? currentProduct.colorImages[colorName] 
-                    : currentProduct.imageUrl;
-                modalImg.src = colorImg;
-                modalImg.classList.remove('low-opacity');
-            }, 300);
-        }
-
-        function openModal(id) {
-            currentProduct = products.find(p => p.id === id);
-            selectedSize = ''; selectedColor = ''; selectedSizeType = 'Regular';
-            
-            document.getElementById('modal-img').src = currentProduct.imageUrl;
-            document.getElementById('modal-title').innerText = currentProduct.name;
-            document.getElementById('modal-price').innerText = `${currentProduct.price.toLocaleString('pt-MZ')} MT`;
-            document.getElementById('modal-category').innerText = currentProduct.category;
-            document.getElementById('selected-color-name').innerText = '';
-
-            const sizeTypeContainer = document.getElementById('size-type-container');
-            if(currentProduct.category === 'Camisetas' && currentProduct.oversizePrice) {
-                sizeTypeContainer.classList.remove('hidden');
-                setSizeType('Regular');
-            } else {
-                sizeTypeContainer.classList.add('hidden');
-            }
-
-            const colorContainer = document.getElementById('modal-colors');
-            colorContainer.innerHTML = '';
-            currentProduct.colors.forEach(c => {
-                const swatch = document.createElement('div');
-                const hex = COLOR_MAP[c] || '#cccccc';
-                swatch.className = `color-swatch ${c === 'Branco' ? 'border-gray-200' : ''}`;
-                swatch.style.backgroundColor = hex;
-                swatch.onclick = () => updateColorSelection(c, swatch);
-                swatch.title = c;
-                colorContainer.appendChild(swatch);
-            });
-
-            const sizeContainer = document.getElementById('modal-sizes');
-            sizeContainer.innerHTML = '';
-            currentProduct.sizes.forEach(s => {
-                const btn = document.createElement('button');
-                btn.className = 'py-3 text-sm font-black border-2 rounded-xl transition-all bg-white text-black border-gray-100 hover:border-black';
-                btn.innerText = s;
-                btn.onclick = () => {
-                    selectedSize = s;
-                    document.querySelectorAll('#modal-sizes button').forEach(b => b.classList.remove('btn-option-selected'));
-                    btn.classList.add('btn-option-selected');
-                };
-                sizeContainer.appendChild(btn);
-            });
-
-            document.getElementById('modal-overlay').classList.replace('modal-hidden', 'modal-visible');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            document.getElementById('modal-overlay').classList.replace('modal-visible', 'modal-hidden');
-            document.body.style.overflow = 'auto';
-        }
-
-        function handleProductSubmit(e) {
-            e.preventDefault();
-            const id = document.getElementById('admin-id').value || 'prod-' + Date.now();
-            const name = document.getElementById('admin-name').value;
-            const price = parseFloat(document.getElementById('admin-price').value);
-            const oversizePrice = document.getElementById('admin-oversize-price').value ? parseFloat(document.getElementById('admin-oversize-price').value) : null;
-            const category = document.getElementById('admin-category').value;
-            const imageUrl = document.getElementById('admin-image').value;
-            const description = document.getElementById('admin-description').value;
-            const colors = document.getElementById('admin-colors').value.split(',').map(s => s.trim()).filter(s => s.length > 0);
-            const sizes = document.getElementById('admin-sizes').value.split(',').map(s => s.trim()).filter(s => s.length > 0);
-
-            const colorImages = {};
-            document.querySelectorAll('.admin-color-img-input').forEach(inp => {
-                if(inp.value.trim()) colorImages[inp.dataset.color] = inp.value.trim();
-            });
-
-            const newProd = { id, name, price, oversizePrice, category, imageUrl, description, colors, sizes, colorImages };
-            const existingIdx = products.findIndex(p => p.id === id);
-            if(existingIdx > -1) products[existingIdx] = newProd;
-            else products.unshift(newProd);
-
-            saveInventory(); resetAdminForm(); renderAdminList(); renderProducts();
-            alert("Produto guardado com sucesso!");
+            if (colors.length > 0) {
+                container.classList.remove('hidden');
+                list.innerHTML = colors.map(color => `
+                    <div class="flex flex-col space-y-1">
+                        <label class="text-[8px] font-bold uppercase text-gray-400">URL para cor: ${color}</label>
+                        <input type="url" class="mockup-url-input w-full p-2 bg-white border border-gray-100 rounded-lg text-[10px]" data-color="${color}" placeholder="https://...">
+                    </div>
+                `).join('');
+            } else container.classList.add('hidden');
         }
 
         function editProduct(id) {
             const p = products.find(prod => prod.id === id);
-            if(!p) return;
-            document.getElementById('admin-id').value = p.id;
-            document.getElementById('admin-name').value = p.name;
-            document.getElementById('admin-price').value = p.price;
-            document.getElementById('admin-oversize-price').value = p.oversizePrice || '';
-            document.getElementById('admin-category').value = p.category;
-            document.getElementById('admin-image').value = p.imageUrl;
-            document.getElementById('admin-description').value = p.description;
-            document.getElementById('admin-colors').value = p.colors.join(', ');
+            if (!p) return;
             
-            generateColorImageInputs();
-            setTimeout(() => {
-                document.querySelectorAll('.admin-color-img-input').forEach(inp => {
-                    if(p.colorImages && p.colorImages[inp.dataset.color]) inp.value = p.colorImages[inp.dataset.color];
-                });
-            }, 100);
-
-            document.getElementById('admin-sizes').value = p.sizes.join(', ');
-            document.getElementById('admin-form-title').innerText = "Editando: " + p.name;
-            document.getElementById('admin-drawer').scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function renderAdminList() {
-            const list = document.getElementById('admin-product-list');
-            list.innerHTML = '';
-            products.forEach(p => {
-                list.innerHTML += `
-                    <div class="flex items-center justify-between p-4 bg-gray-50 border border-gray-100 rounded-2xl group hover:border-black transition-colors">
-                        <div class="flex items-center space-x-4">
-                            <img src="${p.imageUrl}" class="w-12 h-12 object-cover rounded-lg shadow-sm">
-                            <div>
-                                <h4 class="text-sm font-bold uppercase tracking-tight">${p.name}</h4>
-                                <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">${p.price} MT | ${p.category}</p>
-                            </div>
-                        </div>
-                        <div class="flex space-x-2">
-                            <button onclick="editProduct('${p.id}')" class="p-2 text-black hover:bg-black hover:text-white rounded-lg transition-colors"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button onclick="deleteProduct('${p.id}')" class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </div>
-                `;
+            document.getElementById('form-product-id').value = p.id;
+            document.getElementById('form-name').value = p.name;
+            document.getElementById('form-description').value = p.description || '';
+            document.getElementById('form-price').value = p.price;
+            document.getElementById('form-discount').value = p.discountPrice || '';
+            document.getElementById('form-oversize-price').value = p.oversizePrice || '';
+            document.getElementById('form-oversize-discount').value = p.oversizeDiscountPrice || '';
+            document.getElementById('form-category').value = p.category;
+            document.getElementById('form-image').value = p.imageUrl;
+            document.getElementById('form-colors').value = p.colors.join(', ');
+            document.getElementById('form-sizes').value = p.sizes.join(', ');
+            
+            generateMockupInputs();
+            const inputs = document.querySelectorAll('.mockup-url-input');
+            inputs.forEach(input => {
+                const color = input.getAttribute('data-color');
+                if (p.colorImages && p.colorImages[color]) input.value = p.colorImages[color];
             });
+
+            document.getElementById('admin-form').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function addToCartFromModal() {
-            if(!selectedColor || !selectedSize) return alert('Por favor, escolha uma cor e um tamanho.');
-            const finalPrice = (selectedSizeType === 'Oversize' && currentProduct.oversizePrice) ? currentProduct.oversizePrice : currentProduct.price;
-            const itemImage = (currentProduct.colorImages && currentProduct.colorImages[selectedColor]) ? currentProduct.colorImages[selectedColor] : currentProduct.imageUrl;
-            const idx = cart.findIndex(i => i.id === currentProduct.id && i.size === selectedSize && i.color === selectedColor && i.sizeType === selectedSizeType);
+        function handleAdminSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('form-product-id').value || `p-${Date.now()}`;
+            const colors = document.getElementById('form-colors').value.split(',').map(c => c.trim()).filter(c => c);
+            const sizes = document.getElementById('form-sizes').value.split(',').map(s => s.trim()).filter(s => s);
             
-            if(idx > -1) {
-                cart[idx].qty += 1;
-            } else {
-                cart.push({
-                    ...currentProduct,
-                    price: finalPrice,
-                    size: selectedSize,
-                    color: selectedColor,
-                    sizeType: selectedSizeType,
-                    imageUrl: itemImage,
-                    qty: 1
-                });
+            const colorImages = {};
+            document.querySelectorAll('.mockup-url-input').forEach(input => {
+                if (input.value) colorImages[input.getAttribute('data-color')] = input.value;
+            });
+
+            const newProduct = {
+                id,
+                name: document.getElementById('form-name').value,
+                description: document.getElementById('form-description').value,
+                price: Number(document.getElementById('form-price').value),
+                discountPrice: Number(document.getElementById('form-discount').value) || null,
+                oversizePrice: Number(document.getElementById('form-oversize-price').value) || null,
+                oversizeDiscountPrice: Number(document.getElementById('form-oversize-discount').value) || null,
+                category: document.getElementById('form-category').value,
+                imageUrl: document.getElementById('form-image').value,
+                colors, sizes, colorImages
+            };
+
+            const index = products.findIndex(p => p.id === id);
+            if (index > -1) products[index] = newProduct;
+            else products.unshift(newProduct);
+
+            localStorage.setItem('chilen_inventory', JSON.stringify(products));
+            renderAdminProducts(); renderProducts(); resetAdminForm();
+            alert("Inventário actualizado com sucesso!");
+        }
+
+        function deleteProduct(id) {
+            if (confirm("Deseja apagar este artigo definitivamente?")) {
+                products = products.filter(p => p.id !== id);
+                localStorage.setItem('chilen_inventory', JSON.stringify(products));
+                renderAdminProducts(); renderProducts();
             }
-            saveCart(); closeModal(); toggleCart();
+        }
+
+        function resetAdminForm() {
+            document.getElementById('admin-form').reset();
+            document.getElementById('form-product-id').value = '';
+            document.getElementById('mockup-urls-container').classList.add('hidden');
+        }
+
+        function resetInventory() {
+            if (confirm("Repor inventário padrão?")) {
+                localStorage.removeItem('chilen_inventory');
+                location.reload();
+            }
+        }
+
+        // --- CATALOGO E CARRINHO ---
+        function openProductModal(id) {
+            activeProduct = products.find(p => p.id === id);
+            selectedSize = ''; selectedColor = ''; selectedSizeType = 'Regular';
+            updateModalUI();
+            document.getElementById('product-modal').classList.remove('hidden');
+            document.body.classList.add('modal-open');
+        }
+
+        function updateModalUI() {
+            const p = activeProduct;
+            const priceInfo = selectedSizeType === 'Oversize' ? 
+                { cur: p.oversizeDiscountPrice || p.oversizePrice || p.price, old: p.oversizeDiscountPrice ? p.oversizePrice : null } : 
+                { cur: p.discountPrice || p.price, old: p.discountPrice ? p.price : null };
+
+            const imgContainer = document.getElementById('modal-image-container');
+            const currentImg = (selectedColor && p.colorImages && p.colorImages[selectedColor]) ? p.colorImages[selectedColor] : p.imageUrl;
+            imgContainer.innerHTML = `<img src="${currentImg}" class="w-full h-auto rounded-xl shadow-lg animate-fade-in">`;
+
+            document.getElementById('modal-details-container').innerHTML = `
+                <span class="text-[11px] font-black text-gray-400 uppercase tracking-widest">${p.category}</span>
+                <h2 class="text-4xl font-black tracking-tighter mt-2 mb-2 uppercase leading-none">${p.name}</h2>
+                <div class="flex items-center gap-3 mt-4">
+                    ${priceInfo.old ? `<p class="text-xl font-bold text-gray-300 line-through">${priceInfo.old.toLocaleString('pt-MZ')} MT</p>` : ''}
+                    <p class="text-4xl font-black text-black">${priceInfo.cur.toLocaleString('pt-MZ')} MT</p>
+                </div>
+                <div class="mt-6 border-t pt-6">
+                    <h4 class="text-[10px] font-black mb-2 uppercase tracking-widest text-gray-400">SOBRE</h4>
+                    <p class="text-sm text-gray-600 leading-relaxed">${p.description || 'Design Chilen Official.'}</p>
+                </div>
+                ${p.oversizePrice ? `
+                    <div class="mt-8">
+                        <h4 class="text-[10px] font-black mb-4 uppercase tracking-widest text-gray-400">CORTE</h4>
+                        <div class="flex gap-2">
+                            <button onclick="setModalType('Regular')" class="flex-1 py-3 text-[10px] font-black border-2 rounded-xl uppercase ${selectedSizeType === 'Regular' ? 'bg-black text-white' : 'border-gray-100 hover:border-black'}">Regular</button>
+                            <button onclick="setModalType('Oversize')" class="flex-1 py-3 text-[10px] font-black border-2 rounded-xl uppercase ${selectedSizeType === 'Oversize' ? 'bg-black text-white' : 'border-gray-100 hover:border-black'}">Oversized</button>
+                        </div>
+                    </div>` : ''}
+                <div class="mt-8">
+                    <h4 class="text-[10px] font-black mb-4 uppercase tracking-widest text-gray-400">COR</h4>
+                    <div class="flex flex-wrap gap-4">
+                        ${p.colors.map(c => `<button onclick="setModalColor('${c}')" class="w-8 h-8 rounded-full border-2 ${selectedColor === c ? 'border-black scale-110 shadow-lg' : 'border-transparent'}" style="background-color: ${getColorHex(c)}"></button>`).join('')}
+                    </div>
+                </div>
+                <div class="mt-8">
+                    <h4 class="text-[10px] font-black mb-4 uppercase tracking-widest text-gray-400">TAMANHO</h4>
+                    <div class="grid grid-cols-4 gap-2">
+                        ${p.sizes.map(s => `<button onclick="setModalSize('${s}')" class="py-3 text-[11px] font-black border-2 rounded-xl uppercase ${selectedSize === s ? 'bg-black text-white shadow-md' : 'hover:border-black'}">${s}</button>`).join('')}
+                    </div>
+                </div>
+                <button onclick="addToCart()" class="w-full py-5 bg-black text-white font-black rounded-2xl mt-8 uppercase tracking-widest text-[11px] shadow-xl">Adicionar ao Carrinho</button>
+            `;
+        }
+
+        function setModalType(t) { selectedSizeType = t; updateModalUI(); }
+        function setModalColor(c) { selectedColor = c; updateModalUI(); }
+        function setModalSize(s) { selectedSize = s; updateModalUI(); }
+        function closeProductModal() { document.getElementById('product-modal').classList.add('hidden'); document.body.classList.remove('modal-open'); }
+
+        function toggleCart(open) {
+            const overlay = document.getElementById('cart-drawer-overlay');
+            const drawer = document.getElementById('cart-drawer');
+            if (open) { overlay.classList.remove('hidden'); drawer.classList.remove('translate-x-full'); renderCart(); }
+            else { overlay.classList.add('hidden'); drawer.classList.add('translate-x-full'); }
+        }
+
+        function addToCart() {
+            if (!selectedSize || !selectedColor) return alert('Seleccione cor e tamanho!');
+            const price = selectedSizeType === 'Oversize' ? (activeProduct.oversizeDiscountPrice || activeProduct.oversizePrice || activeProduct.price) : (activeProduct.discountPrice || activeProduct.price);
+            cart.push({ ...activeProduct, price, size: selectedSize, color: selectedColor, type: selectedSizeType, qty: 1 });
+            localStorage.setItem('chilen_cart', JSON.stringify(cart));
+            updateCartUI(); closeProductModal(); toggleCart(true);
+        }
+
+        function updateCartUI() {
+            const badge = document.getElementById('cart-count-badge');
+            if (cart.length > 0) { badge.innerText = cart.length; badge.classList.remove('hidden'); }
+            else badge.classList.add('hidden');
         }
 
         function renderCart() {
             const container = document.getElementById('cart-items-container');
-            const footer = document.getElementById('cart-footer');
-            const countBadge = document.getElementById('cart-count');
-            if(!container) return;
-            container.innerHTML = '';
-            let total = 0, count = 0;
-
-            if(cart.length === 0) {
-                container.innerHTML = `<div class="h-full flex flex-col items-center justify-center text-center p-12 opacity-30"><i class="fa-solid fa-bag-shopping text-4xl mb-4"></i><p class="text-xs font-bold uppercase tracking-widest">Seu carrinho está vazio</p></div>`;
-                footer.classList.add('hidden'); countBadge.classList.add('hidden');
-            } else {
-                cart.forEach((item, index) => {
-                    total += item.price * item.qty;
-                    count += item.qty;
-                    container.innerHTML += `
-                        <div class="flex space-x-4 pb-6 border-b border-gray-50 last:border-0">
-                            <div class="w-20 h-24 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0"><img src="${item.imageUrl}" class="w-full h-full object-cover" /></div>
-                            <div class="flex-1 flex flex-col justify-between">
-                                <div class="flex justify-between items-start">
-                                    <h4 class="text-sm font-bold uppercase tracking-tight">${item.name}</h4>
-                                    <button onclick="removeFromCart(${index})" class="text-gray-300 hover:text-red-500 transition-colors"><i class="fa-regular fa-trash-can"></i></button>
-                                </div>
-                                <div class="flex flex-wrap gap-1 mt-1">
-                                    <span class="text-[9px] font-bold bg-gray-100 px-2 py-0.5 rounded text-gray-500">${item.sizeType === 'Oversize' ? 'OVERSIZED' : 'REGULAR'}</span>
-                                    <span class="text-[9px] font-bold bg-gray-100 px-2 py-0.5 rounded text-gray-500">${item.color}</span>
-                                    <span class="text-[9px] font-bold bg-gray-100 px-2 py-0.5 rounded text-gray-500">${item.size}</span>
-                                </div>
-                                <div class="flex items-center justify-between mt-2">
-                                    <div class="flex items-center border border-gray-100 rounded-lg bg-white shadow-sm overflow-hidden"><button onclick="changeQty(${index}, -1)" class="px-2 py-1 hover:bg-gray-50">-</button><span class="px-3 text-xs font-bold">${item.qty}</span><button onclick="changeQty(${index}, 1)" class="px-2 py-1 hover:bg-gray-50">+</button></div>
-                                    <p class="text-sm font-bold">${(item.price * item.qty).toLocaleString('pt-MZ')} MT</p>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-                footer.classList.remove('hidden');
-                document.getElementById('cart-total').innerText = `${total.toLocaleString('pt-MZ')} MT`;
-                countBadge.innerText = count; countBadge.classList.remove('hidden');
+            const totalEl = document.getElementById('cart-total');
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-center py-20 text-gray-400 text-xs font-black uppercase tracking-widest">Carrinho Vazio</p>`;
+                document.getElementById('cart-footer').classList.add('hidden');
+                return;
             }
-        }
-
-        function triggerAdmin() {
-            const pass = prompt("Acesso Administrativo. Introduza a senha:");
-            if(pass === ADMIN_PASSWORD) toggleAdmin();
-            else if(pass !== null) alert("Senha inválida.");
-        }
-
-        function toggleAdmin() {
-            const drawer = document.getElementById('admin-drawer');
-            const overlay = document.getElementById('admin-overlay');
-            if(drawer.classList.contains('drawer-hidden')) {
-                drawer.classList.remove('drawer-hidden'); overlay.classList.replace('modal-hidden', 'modal-visible');
-                renderAdminList(); document.body.style.overflow = 'hidden';
-            } else {
-                drawer.classList.add('drawer-hidden'); overlay.classList.replace('modal-visible', 'modal-hidden');
-                document.body.style.overflow = 'auto';
-            }
-        }
-
-        function deleteProduct(id) {
-            if(confirm("Deseja remover este artigo do inventário?")) {
-                products = products.filter(p => p.id !== id);
-                saveInventory(); renderAdminList(); renderProducts();
-            }
-        }
-
-        function resetAdminForm() { 
-            document.getElementById('admin-product-form').reset(); 
-            document.getElementById('admin-id').value = ''; 
-            document.getElementById('admin-form-title').innerText = "Configurar Artigo";
-            document.getElementById('admin-color-images-container').classList.add('hidden');
-            document.getElementById('color-inputs-list').innerHTML = '';
-        }
-
-        function saveInventory() { localStorage.setItem('chilen_inventory', JSON.stringify(products)); }
-        function setCategory(cat) { 
-            currentCategory = cat; 
-            document.querySelectorAll('.cat-btn').forEach(btn => {
-                btn.classList.replace('bg-black', 'bg-gray-100'); btn.classList.replace('text-white', 'text-gray-500');
-                if(btn.innerText === cat) { btn.classList.replace('bg-gray-100', 'bg-black'); btn.classList.replace('text-gray-500', 'text-white'); }
-            });
-            renderProducts(); 
-        }
-
-        function toggleCart() {
-            const drawer = document.getElementById('cart-drawer');
-            const overlay = document.getElementById('cart-overlay');
-            if(drawer.classList.contains('drawer-hidden')) {
-                drawer.classList.remove('drawer-hidden'); overlay.classList.replace('modal-hidden', 'modal-visible'); renderCart();
-            } else {
-                drawer.classList.add('drawer-hidden'); overlay.classList.replace('modal-visible', 'modal-hidden');
-            }
-        }
-
-        function changeQty(index, delta) { cart[index].qty = Math.max(1, cart[index].qty + delta); saveCart(); renderCart(); }
-        function removeFromCart(index) { cart.splice(index, 1); saveCart(); renderCart(); }
-        function saveCart() { localStorage.setItem('chilen_cart', JSON.stringify(cart)); }
-
-        function checkout() {
-            if(cart.length === 0) return;
-            let message = `Olá Chilen! Gostaria de encomendar:\n\n`;
+            document.getElementById('cart-footer').classList.remove('hidden');
             let total = 0;
-            cart.forEach((item, i) => {
-                const tipo = item.sizeType === 'Oversize' ? '(OVERSIZED)' : '(REGULAR)';
-                message += `${i+1}. *${item.name}* ${tipo}\n   • Cor: ${item.color}\n   • Tamanho: ${item.size} (x${item.qty})\n   • Preço: ${(item.price * item.qty).toLocaleString('pt-MZ')} MT\n\n`;
+            container.innerHTML = cart.map((item, idx) => {
                 total += item.price * item.qty;
-            });
-            message += `*Total do Pedido: ${total.toLocaleString('pt-MZ')} MT*\n\n_Maputo Cidade/Província._`;
-            window.open(`https://wa.me/${STORE_INFO.whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
+                const img = (item.colorImages && item.colorImages[item.color]) ? item.colorImages[item.color] : item.imageUrl;
+                return `
+                <div class="flex space-x-4 border-b pb-4">
+                    <img src="${img}" class="w-16 h-20 object-cover rounded shadow-sm">
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start">
+                            <h4 class="text-xs font-black uppercase tracking-tight">${item.name}</h4>
+                            <button onclick="removeFromCart(${idx})" class="text-gray-300 hover:text-red-500"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                        </div>
+                        <p class="text-[8px] text-gray-400 font-bold uppercase">${item.type} | ${item.color} | ${item.size}</p>
+                        <p class="text-xs font-black mt-2">${item.price.toLocaleString('pt-MZ')} MT</p>
+                    </div>
+                </div>`;
+            }).join('');
+            totalEl.innerText = `${total.toLocaleString('pt-MZ')} MT`;
         }
 
-        renderProducts(); renderCart();
+        function removeFromCart(idx) { cart.splice(idx, 1); localStorage.setItem('chilen_cart', JSON.stringify(cart)); updateCartUI(); renderCart(); }
+
+        function handleCheckout() {
+            let msg = `Olá Chilen! Gostaria de encomendar:\n\n`;
+            let total = 0;
+            cart.forEach((i, idx) => {
+                msg += `${idx+1}. *${i.name}* (${i.type})\n - ${i.color} | ${i.size} (x${i.qty})\n - Preço: ${i.price.toLocaleString('pt-MZ')} MT\n\n`;
+                total += i.price * i.qty;
+            });
+            msg += `*Total: ${total.toLocaleString('pt-MZ')} MT*`;
+            window.open(`https://wa.me/${STORE_INFO.whatsappNumber}?text=${encodeURIComponent(msg)}`);
+        }
+
+        function getColorHex(c) {
+            const map = { 'Preto': '#000', 'Branco': '#fff', 'Cinzento': '#888', 'Azul Marinho': '#000080', 'Cinzento Mescla': '#b5b5b5', 'Azul': '#0000FF', 'Vermelho': '#FF0000', 'Verde': '#008000', 'Dourado': '#D4AF37' };
+            return map[c] || '#ccc';
+        }
+
+        init();
     </script>
 </body>
 </html>
